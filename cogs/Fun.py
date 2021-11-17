@@ -29,7 +29,7 @@ class Fun(commands.Cog):
             await r.delete()
 
     @commands.command(aliases = ["avatar"])
-    @commands.command(2, 3, commands.BucketType.user)
+    @commands.cooldown(2, 3, commands.BucketType.user)
     async def avatar(self, ctx, user : nextcord.Member = None):
 
         def check_username(name):
