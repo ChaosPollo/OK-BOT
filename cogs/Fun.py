@@ -30,7 +30,7 @@ class Fun(commands.Cog):
 
     @commands.command(aliases = ["avatar"])
     @commands.cooldown(2, 3, commands.BucketType.user)
-    async def avatar(self, ctx, user : nextcord.Member = None):
+    async def avatar_function(self, ctx, user : nextcord.Member = None):
 
         def check_username(name):
             global new_name
