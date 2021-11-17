@@ -3,6 +3,7 @@ from nextcord.ext import commands
 
 dotenv.load_dotenv()
 client = commands.Bot(command_prefix="&")
+client.remove_command('help')
 
 @client.event
 async def on_ready():
