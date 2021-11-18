@@ -45,7 +45,8 @@ class Fun(commands.Cog):
             check_username(ctx.author.name)
 
             e = nextcord.Embed(title=f"Avatar de {new_name}", color = nextcord.Color.random(), timestamp=datetime.datetime.utcnow())
-            e.set_footer(text=f"URL: [Avatar url]({ctx.author.avatar})")
+            e.set_image(url=ctx.author.display_avatar)
+            e.set_footer(text=f"URL: [{ctx.author.avatar}](Avatar URL)")
             await ctx.send(embed = e)
 
 def setup(client):
