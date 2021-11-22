@@ -96,7 +96,7 @@ class Fun(commands.Cog):
                 res = requests.get(f"https://some-random-api.ml/binary?encode={text}")
                 json = res.json()
                 binary = json["binary"]
-                e = nextcord.Embed(title="Traductor Binario", description=f"**Texto original:**\n{args}\n\n**Binario:**\n{binary}", color=nextcord.Color.gold())
+                e = nextcord.Embed(title="Traductor Binario", description=f"**Texto original:**\n{args}\n\n**Binario:**\n{binary}", color=nextcord.Color.gold(), timestamp=datetime.datetime.utcnow())
                 e.set_footer(text=f"Pedido por: {new_name}")
                 await ctx.send(embed = e)
                 await ctx.message.delete()
