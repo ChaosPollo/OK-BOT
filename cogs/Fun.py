@@ -148,5 +148,10 @@ class Fun(commands.Cog):
             await asyncio.sleep(3)
             await r.delete()
 
+    @commands.command(aliases = ["meme"])
+    @commands.cooldown(2, 3, commands.BucketType.user)
+    async def meme_function(self, ctx):
+        return
+    
 def setup(client):
     client.add_cog(Fun(client))
