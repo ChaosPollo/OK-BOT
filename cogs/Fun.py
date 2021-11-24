@@ -1,5 +1,15 @@
-import nextcord, asyncio, datetime, requests, random, re
+import nextcord, asyncio, datetime, requests, random, re, praw
+from praw.reddit import Subreddit
 from nextcord.ext import commands
+
+reddit = praw.Reddit(client_id = "z9x0j67BXBb2m0aDz1jnzA", 
+                     client_secret = "JafIAV9_1PONVDtUImI0tembAkJaVA", 
+                     username = "Mr-Pollo21", 
+                     password = "tom45_43", 
+                     user_agent = "Ok bot meme gen")
+
+subredditMeme = reddit.subreddit("SpanishMeme")
+subredditStory = reddit.subreddit("HistoriasDeReddit")
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -22,6 +32,10 @@ class Fun(commands.Cog):
         else:
             new_name = name
 
+    #################
+    ## Comando say ##
+    #################
+
     @commands.command(aliases = ["say", "decir"])
     @commands.cooldown(2, 3, commands.BucketType.user)
     async def say_function(self, ctx, *, args = None):
@@ -43,6 +57,11 @@ class Fun(commands.Cog):
             r = await ctx.send(f"❗ | El comando `say` esta en cooldown por *{error.retry_after:.2f}s*")
             await asyncio.sleep(3)
             await r.delete()
+            
+    ####################
+    ## Comando avatar ##
+    ####################
+
 
     @commands.command(aliases = ["avatar"])
     @commands.cooldown(2, 3, commands.BucketType.user)
@@ -78,6 +97,11 @@ class Fun(commands.Cog):
             r = await ctx.send(f"❗ | El comando `avatar` esta en cooldown por *{error.retry_after:.2f}s*")
             await asyncio.sleep(3)
             await r.delete()
+            
+    ####################
+    ## Comando binary ##
+    ####################
+
 
     @commands.command(aliases = ["binary", "binario"])
     @commands.cooldown(2, 3, commands.BucketType.user)
@@ -114,6 +138,10 @@ class Fun(commands.Cog):
             r = await ctx.send(f"❗ | El comando `binary` esta en cooldown por *{error.retry_after:.2f}s*")
             await asyncio.sleep(3)
             await r.delete()
+            
+    ###################
+    ## Comando tweet ##
+    ###################
 
     @commands.command(aliases = ["tweet"])
     @commands.cooldown(2, 3, commands.BucketType.user)
@@ -147,11 +175,36 @@ class Fun(commands.Cog):
             r = await ctx.send(f"❗ | El comando `tweet` esta en cooldown por *{error.retry_after:.2f}s*")
             await asyncio.sleep(3)
             await r.delete()
+            
+    ##################
+    ## Comando meme ##
+    ##################
 
     @commands.command(aliases = ["meme"])
     @commands.cooldown(2, 3, commands.BucketType.user)
     async def meme_function(self, ctx):
-        return
-    
+        
+        top = subredditMeme.top(limit = 25)
+        mims = []
+        for memes in top:
+            mims.append(memes)
+        
+        meme = random.choice(mims)
+        
+        e = nextcord.Embed(timestamp=datetime.datetime.utcnow(), color = nextcord.Color.random())
+        e.add_field(name=meme.title, value=f"[Link del meme]({meme.url})", inline=False)
+        e.set_image(url = meme.url)
+        e.set_footer(text=f"Pedido por: {ctx.author.name}")
+        await ctx.send(embed = e)
+        
+    @meme_function.error
+    async def tweet_error(self, ctx, error):
+
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.message.delete()
+            r = await ctx.send(f"❗ | El comando `meme` esta en cooldown por *{error.retry_after:.2f}s*")
+            await asyncio.sleep(3)
+            await r.delete()
+            
 def setup(client):
     client.add_cog(Fun(client))

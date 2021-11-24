@@ -2,7 +2,7 @@ import nextcord, dotenv, os, asyncio
 from nextcord.ext import commands
 
 dotenv.load_dotenv()
-client = commands.Bot(command_prefix="&")
+client = commands.Bot(command_prefix="o!")
 client.remove_command('help')
 
 @client.event
