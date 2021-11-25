@@ -28,13 +28,22 @@ async def on_command_error(ctx, error):
         e = nextcord.Embed(description=f"❌ **| El comando `{cmdbeta2}` no ha sido encontrado, use `o!help` para ver todos los comandos.**", color=nextcord.Color.red())
         error = await ctx.send(embed = e)
         await asyncio.sleep(5)
-        await error.delete()      
+        await error.delete()    
+    
+    if isinstance(error, commands.BotMissingPermissions):
+        
+        await ctx.message.delete()
+        e = nextcord.Embed(description=f"❌ **| El bot no tiene permisos necesarios.**", color=nextcord.Color.red())
+        error = await ctx.send(embed = e)
+        await asyncio.sleep(5)
+        await error.delete()    
     
 @client.command(aliases = ["help", "ayuda"])
 async def help_function(ctx):
     
     e = nextcord.Embed(title = "📔 Ayuda | Ok bot", description="**❓ | Prefix:** `o!`\n**🦺 | Desarrollador:** `Mr. Pollo`\n**📖 | Libreria:** `nextcord`", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.from_rgb(252, 255, 30))
     e.add_field(name="🎃 | Diversión", value="`say` `avatar` `tweet` `binary` `meme`", inline=False)
+    e.add_field(name="🎩 | Moderación", value="`ban` `kick`")
     e.add_field(name="🎫 | Invitación", value="**[Invite](https://discord.com/api/oauth2/authorize?client_id=898721894889582652&permissions=17649690726&scope=bot)**", inline=False)
     e.set_footer(text=f"Pedido por: {ctx.author.name}")
     await ctx.send(embed = e)
