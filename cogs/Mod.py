@@ -11,14 +11,16 @@ class Mod(commands.Cog):
 
         if user == None:
             await ctx.message.delete()
-            r = await ctx.send("❗ | ¡Debes mencionar a un usuario!")
+            e = nextcord.Embed(description="❌ **| Debes mencionar a un usuario.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
         elif user == ctx.author:
             await ctx.message.delete()
-            r = await ctx.send("❌ | No te puedes banear a ti mismo")
+            e = nextcord.Embed(description="❌ **| Debes mencionar una razon.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
         else:
             if reason == None:
                 text = "No se ha dado una razon..."
@@ -33,6 +35,23 @@ class Mod(commands.Cog):
             except Exception:
                 pass
             await user.ban()
+    
+    @ban_function.error
+    async def ban_error(self, ctx, error):
+        
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.message.delete()
+            e = nextcord.Embed(description=f"❌ **| Usted no tiene permisos suficientes para ejecutar este comando.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()  
+            
+        elif isinstance(error, commands.MemberNotFound):
+            await ctx.message.delete()
+            e = nextcord.Embed(description=f"❌ **| El usuario no se ha encontrado.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()      
 
 def setup(client):
     client.add_cog(Mod(client))

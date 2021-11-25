@@ -1,5 +1,4 @@
-import nextcord, asyncio, datetime, requests, random, re, praw
-from praw.reddit import Subreddit
+import nextcord, asyncio, datetime, requests, random, re, praw, typing
 from nextcord.ext import commands
 
 reddit = praw.Reddit(client_id = "z9x0j67BXBb2m0aDz1jnzA", 
@@ -9,7 +8,6 @@ reddit = praw.Reddit(client_id = "z9x0j67BXBb2m0aDz1jnzA",
                      user_agent = "Ok bot meme gen")
 
 subredditMeme = reddit.subreddit("SpanishMeme")
-subredditStory = reddit.subreddit("HistoriasDeReddit")
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -18,17 +16,17 @@ class Fun(commands.Cog):
     def check_username(self, name):
         global new_name
         if len(name) > 7 and len(name) <= 10:
-            new_name = f"{name[:-3]}..."
+            new_name = f"{name[:-2]}..."
         elif len(name) > 10 and len(name) <= 15:
-            new_name = f"{name[:-5]}..."
+            new_name = f"{name[:-4]}..."
         elif len(name) > 15 and len(name) <= 20:
-            new_name = f"{name[:-10]}..."
+            new_name = f"{name[:-8]}..."
         elif len(name) > 20 and len(name) <= 25:
-            new_name = f"{name[:-15]}..."
+            new_name = f"{name[:-13]}..."
         elif len(name) > 25 and len(name) <= 30:
-            new_name = f"{name[:-20]}..."
+            new_name = f"{name[:-18]}..."
         elif len(name) > 30 and len(name) <= 35:
-            new_name = f"{name[:-25]}..."
+            new_name = f"{name[:-23]}..."
         else:
             new_name = name
 
@@ -42,9 +40,10 @@ class Fun(commands.Cog):
 
         if args == None:
             await ctx.message.delete()
-            r = await ctx.send("❗ | ¡Debes mencionar algo!")
+            e = nextcord.Embed(description="❌ **| Debes escribir algo.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
         else:
             await ctx.message.delete()
             await ctx.send(args)
@@ -54,9 +53,10 @@ class Fun(commands.Cog):
 
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
-            r = await ctx.send(f"❗ | El comando `say` esta en cooldown por *{error.retry_after:.2f}s*")
+            e = nextcord.Embed(description=f"❌ **| Este comando esta en cooldown por {error.retry_after:.2f}s**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
             
     ####################
     ## Comando avatar ##
@@ -94,9 +94,10 @@ class Fun(commands.Cog):
 
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
-            r = await ctx.send(f"❗ | El comando `avatar` esta en cooldown por *{error.retry_after:.2f}s*")
+            e = nextcord.Embed(description=f"❌ **| Este comando esta en cooldown por {error.retry_after:.2f}s**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
             
     ####################
     ## Comando binary ##
@@ -111,9 +112,10 @@ class Fun(commands.Cog):
 
         if args == None:
             await ctx.message.delete()
-            r = await ctx.send("❗ | ¡Debes mencionar algo!")
+            e = nextcord.Embed(description="❌ **| Debes escribir algo para traducirlo.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
         else:
             if len(args) <= 35:
                 text = args.replace(" ", "%20")
@@ -126,18 +128,20 @@ class Fun(commands.Cog):
                 await ctx.message.delete()
             else:
                 await ctx.message.delete()
-                r = await ctx.send("❌ | El texto no puede tener más de 35 caracteres")
+                e = nextcord.Embed(description="❌ **| El texto debe tener menos de 35 caracteres.**", color=nextcord.Color.red())
+                error = await ctx.send(embed = e)
                 await asyncio.sleep(3)
-                await r.delete()
+                await error.delete()
 
     @binary_function.error
     async def binary_error(self, ctx, error):
 
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
-            r = await ctx.send(f"❗ | El comando `binary` esta en cooldown por *{error.retry_after:.2f}s*")
+            e = nextcord.Embed(description=f"❌ **| Este comando esta en cooldown por {error.retry_after:.2f}s**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
             
     ###################
     ## Comando tweet ##
@@ -145,26 +149,44 @@ class Fun(commands.Cog):
 
     @commands.command(aliases = ["tweet"])
     @commands.cooldown(2, 3, commands.BucketType.user)
-    async def tweet_function(self, ctx, *, args = None):
-
-        self.check_username(ctx.author.name)
-
-        avatar = ctx.author.avatar
-        name = new_name.replace(" ", "%20")
+    async def tweet_function(self, ctx, member : typing.Optional[nextcord.Member] = None, *, args = None):
+        
+        if args == None:
+            await ctx.message.delete()
+            e = nextcord.Embed(description="❌ **| Debes escribir algo.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()
+            return
+        
         replies = random.randint(100, 500)
         retweets = random.randint(100, 350)
         likes = random.randint(1, 100)
 
-        if args == None:
-            text = ["Se%20murio%20mientras%20escribia...", "Se%20aburrio%20de%20escribir...", "Simplemente%20no%20escribio%20nada...", "AMOGUS!"]
-            textR = random.choice(text)
-            url = f"https://some-random-api.ml/canvas/tweet?avatar={avatar}&username={name}&displayname={name}&comment={textR}&replies={replies}&retweets={retweets}&likes={likes}k"
-            await ctx.send(url)
-            await ctx.message.delete()
-        else:
+        if member == None:
+
+            self.check_username(ctx.author.name)
+            avatar = ctx.author.avatar
+            name = new_name.replace(" ", "%20")
+
             text = args.replace(" ", "%20")
-            url = f"https://some-random-api.ml/canvas/tweet?avatar={avatar}&username={name}&displayname={name}&comment={text}&replies={replies}&retweets={retweets}&likes={likes}k"
-            await ctx.send(url)
+            e = nextcord.Embed(title = f"{new_name} ha posteado algo 🤔", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.from_rgb(0, 237, 224))
+            e.set_image(url = f"https://some-random-api.ml/canvas/tweet?avatar={avatar}&username={name}&displayname={name}&comment={text}&replies={replies}&retweets={retweets}&likes={likes}k")
+            e.set_footer(text=f"Pedido por: {new_name}")
+            await ctx.send(embed = e)
+            await ctx.message.delete()
+                
+        else:
+            self.check_username(member.name)
+            avatar = member.avatar
+            name = new_name.replace(" ", "%20")
+            
+            text = args.replace(" ", "%20")
+            e = nextcord.Embed(title = f"{new_name} ha posteado algo 🤔", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.from_rgb(0, 237, 224))
+            e.set_image(url = f"https://some-random-api.ml/canvas/tweet?avatar={avatar}&username={name}&displayname={name}&comment={text}&replies={replies}&retweets={retweets}&likes={likes}k")
+            self.check_username(ctx.author.name)
+            e.set_footer(text=f"Pedido por: {new_name}")
+            await ctx.send(embed = e)
             await ctx.message.delete()
 
     @tweet_function.error
@@ -172,9 +194,10 @@ class Fun(commands.Cog):
 
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
-            r = await ctx.send(f"❗ | El comando `tweet` esta en cooldown por *{error.retry_after:.2f}s*")
+            e = nextcord.Embed(description=f"❌ **| Este comando esta en cooldown por {error.retry_after:.2f}s**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
             
     ##################
     ## Comando meme ##
@@ -191,20 +214,21 @@ class Fun(commands.Cog):
         
         meme = random.choice(mims)
         
-        e = nextcord.Embed(timestamp=datetime.datetime.utcnow(), color = nextcord.Color.random())
+        e = nextcord.Embed(timestamp=datetime.datetime.utcnow())
         e.add_field(name=meme.title, value=f"[Link del meme]({meme.url})", inline=False)
         e.set_image(url = meme.url)
         e.set_footer(text=f"Pedido por: {ctx.author.name}")
         await ctx.send(embed = e)
         
     @meme_function.error
-    async def tweet_error(self, ctx, error):
+    async def meme_error(self, ctx, error):
 
         if isinstance(error, commands.CommandOnCooldown):
             await ctx.message.delete()
-            r = await ctx.send(f"❗ | El comando `meme` esta en cooldown por *{error.retry_after:.2f}s*")
+            e = nextcord.Embed(description=f"❌ **| Este comando esta en cooldown por {error.retry_after:.2f}s**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
             await asyncio.sleep(3)
-            await r.delete()
+            await error.delete()
             
 def setup(client):
     client.add_cog(Fun(client))
