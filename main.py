@@ -76,7 +76,7 @@ async def on_command_error(ctx, error):
 async def help_function(ctx):
     
     e = nextcord.Embed(title = "📔 Ayuda | Ok bot", description="**❓ | Prefix:** `o!`\n**🦺 | Desarrollador:** `Mr. Pollo`\n**📖 | Libreria:** `nextcord`", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.from_rgb(252, 255, 30))
-    e.add_field(name="🎃 | Diversión", value="`say` `avatar` `tweet` `binary` `meme` `rip` `emojify`", inline=False)
+    e.add_field(name="🎃 | Diversión", value="`say` `avatar` `tweet` `binary` `meme` `rip` `emojify` `wanted`", inline=False)
     e.add_field(name="🎩 | Moderación", value="`ban` `kick` `unban`", inline=False)
     e.add_field(name="🦺 | Información", value="`ping`", inline=False)
     e.add_field(name="🎫 | Invitación", value="**[Invite](https://discord.com/api/oauth2/authorize?client_id=898721894889582652&permissions=17649690726&scope=bot)**", inline=False)

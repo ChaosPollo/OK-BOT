@@ -357,29 +357,29 @@ class Fun(commands.Cog):
                 
     @commands.command(aliases = ["wanted"])
     @commands.cooldown(2, 3, commands.BucketType.user)
-    async def wanted_function(self, ctx, user : typing.Optional[nextcord.Member] = None):
+    async def wanted_function(self, ctx, user : nextcord.Member = None):
         
         if user == None:
             user = ctx.author
             
         self.check_username(user.name)
             
-        rip = Image.open("./img/wanted.jfif")
+        rip = Image.open("./img/wanted.jpg")
         
         avatar = user.avatar.with_size(128)
         data = BytesIO(await avatar.read())         
         pfp  = Image.open(data)  
         
-        pfp = pfp.resize((198,180))
+        pfp = pfp.resize((543,538))
         
-        rip.paste(pfp, (140,200))
+        rip.paste(pfp, (166,423))
         
-        rip.save("./img/command_wanted.jfif")
+        rip.save("./img/command_wanted.jpg")
         
-        file = nextcord.File("./img/command_wanted.jfif")
+        file = nextcord.File("./img/command_wanted.jpg")
         
         e = nextcord.Embed(title=f"BUSCADO {new_name.upper()}",timestamp=datetime.datetime.utcnow(), color=nextcord.Color.yellow())
-        e.set_image(url="attachment://command_wanted.jfif")
+        e.set_image(url="attachment://command_wanted.jpg")
         self.check_username(ctx.author.name)
         e.set_footer(icon_url=ctx.author.display_avatar, text=f"Pedido por: {new_name}")
         
