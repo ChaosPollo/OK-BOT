@@ -354,6 +354,36 @@ class Fun(commands.Cog):
                 error = await ctx.send(embed = e)
                 await asyncio.sleep(3)
                 await error.delete()
+                
+    @commands.command(aliases = ["wanted"])
+    @commands.cooldown(2, 3, commands.BucketType.user)
+    async def wanted_function(self, ctx, user : typing.Optional[nextcord.Member] = None):
+        
+        if user == None:
+            user = ctx.author
+            
+        self.check_username(user.name)
+            
+        rip = Image.open("./img/wanted.jfif")
+        
+        avatar = user.avatar.with_size(128)
+        data = BytesIO(await avatar.read())         
+        pfp  = Image.open(data)  
+        
+        pfp = pfp.resize((198,180))
+        
+        rip.paste(pfp, (140,200))
+        
+        rip.save("./img/command_wanted.jfif")
+        
+        file = nextcord.File("./img/command_wanted.jfif")
+        
+        e = nextcord.Embed(title=f"BUSCADO {new_name.upper()}",timestamp=datetime.datetime.utcnow(), color=nextcord.Color.yellow())
+        e.set_image(url="attachment://command_wanted.jfif")
+        self.check_username(ctx.author.name)
+        e.set_footer(icon_url=ctx.author.display_avatar, text=f"Pedido por: {new_name}")
+        
+        await ctx.send(embed=e, file=file)
             
 def setup(client):
     client.add_cog(Fun(client))
