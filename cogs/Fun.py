@@ -316,7 +316,7 @@ class Fun(commands.Cog):
         
     @commands.command(aliases = ["emojify"])
     @commands.cooldown(2, 3, commands.BucketType.user)
-    async def rip_function(self, ctx, *, args = None):
+    async def emoji_function(self, ctx, *, args = None):
         
         emojis = []
         
