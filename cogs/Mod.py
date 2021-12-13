@@ -39,6 +39,13 @@ class Mod(commands.Cog):
             await asyncio.sleep(3)
             await error.delete()
             
+        elif ctx.author.top_role.position < user.top_role.position:
+            
+            e = nextcord.Embed(description="❌ **| El usuario tiene un rango más alto.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()
+            
         elif user == ctx.author:
 
             e = nextcord.Embed(description="❌ **| No te puedes banear a ti mismo.**", color=nextcord.Color.red())
@@ -73,6 +80,13 @@ class Mod(commands.Cog):
         if user == None:
             
             e = nextcord.Embed(description="❌ **| Debes mencionar a un usuario.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()
+            
+        elif ctx.author.top_role.position < user.top_role.position:
+            
+            e = nextcord.Embed(description="❌ **| El usuario tiene un rango más alto.**", color=nextcord.Color.red())
             error = await ctx.send(embed = e)
             await asyncio.sleep(3)
             await error.delete()

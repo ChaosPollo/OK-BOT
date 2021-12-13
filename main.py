@@ -1,5 +1,4 @@
 import nextcord, dotenv, os, asyncio, datetime
-from nextcord import message
 from nextcord.ext import commands
 
 dotenv.load_dotenv()
