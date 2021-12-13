@@ -4,6 +4,27 @@ from nextcord.ext import commands
 class Mod(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.msg_content = None
+        self.msg_user = None
+        self.msg_id = None
+        self.msg_guild = None
+        
+    def check_username(self, name):
+        global new_name
+        if len(name) > 7 and len(name) <= 10:
+            new_name = f"{name[:-2]}..."
+        elif len(name) > 10 and len(name) <= 15:
+            new_name = f"{name[:-4]}..."
+        elif len(name) > 15 and len(name) <= 20:
+            new_name = f"{name[:-8]}..."
+        elif len(name) > 20 and len(name) <= 25:
+            new_name = f"{name[:-13]}..."
+        elif len(name) > 25 and len(name) <= 30:
+            new_name = f"{name[:-18]}..."
+        elif len(name) > 30 and len(name) <= 35:
+            new_name = f"{name[:-23]}..."
+        else:
+            new_name = name
 
     @commands.command(aliases = ["ban"])
     @commands.has_guild_permissions(ban_members=True)
@@ -112,6 +133,46 @@ class Mod(commands.Cog):
                     return
             
             await ctx.send(f"**¡Usuario {user} ha sido desbaneado!**")
+  
+    @commands.Cog.listener()
+    async def on_message_delete(self, msg):
+        
+        self.msg_content = msg.content
+        self.msg_user = msg.author.name
+        self.msg_id = msg.id
+        self.msg_guild = msg.guild.id
+        await asyncio.sleep(60)
+        self.msg_content = None
+        self.msg_user = None
+        self.msg_id = None
+        self.sg_guild = None
+            
+    @commands.command(aliases = ["snipe"])
+    async def snipe_function(self, ctx):
+        
+        if self.msg_content == None:
+            
+            e = nextcord.Embed(description=f"❌ **| No hay ningun mensaje borrado.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()
+            return
+        
+        elif self.msg_guild != ctx.guild.id:
+            
+            e = nextcord.Embed(description=f"❌ **| No hay ningun mensaje borrado.**", color=nextcord.Color.red())
+            error = await ctx.send(embed = e)
+            await asyncio.sleep(3)
+            await error.delete()
+            return
+        
+        else:
+            
+            e = nextcord.Embed(title="Comando snipe 🔎", description=f"**Contenido:** {self.msg_content}\n**Usuario:** {self.msg_user}\n**Id del mensaje:** {self.msg_id}", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.dark_blue())
+            self.check_username(ctx.author.name)
+            e.set_footer(icon_url=ctx.author.display_avatar, text=f"Pedido por: {new_name}")
+            e.set_thumbnail(url=ctx.author.display_avatar)
+            await ctx.send(embed = e)
             
 def setup(client):
     client.add_cog(Mod(client))

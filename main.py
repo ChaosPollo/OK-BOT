@@ -1,5 +1,5 @@
-from logging import exception
 import nextcord, dotenv, os, asyncio, datetime
+from nextcord import message
 from nextcord.ext import commands
 
 dotenv.load_dotenv()
@@ -16,7 +16,7 @@ async def on_ready():
             except Exception as error:
                 print(f"[-] No se ha cargado el modulo {file[:-3]} por: {error}")
     print("¡SE HA INICIADO EL BOT!")
-    
+
 @client.event
 async def on_command_error(ctx, error):
     
@@ -71,14 +71,16 @@ async def on_command_error(ctx, error):
         error = await ctx.send(embed = e)
         await asyncio.sleep(3)
         await error.delete() 
-    
+        
 @client.command(aliases = ["help", "ayuda"])
 async def help_function(ctx):
     
+    await ctx.message.delete()
+    
     e = nextcord.Embed(title = "📔 Ayuda | Ok bot", description="**❓ | Prefix:** `o!`\n**🦺 | Desarrollador:** `Mr. Pollo`\n**📖 | Libreria:** `nextcord`", timestamp=datetime.datetime.utcnow(), color=nextcord.Color.from_rgb(252, 255, 30))
-    e.add_field(name="🎃 | Diversión", value="`say` `avatar` `tweet` `binary` `meme` `rip` `emojify` `wanted`", inline=False)
-    e.add_field(name="🎩 | Moderación", value="`ban` `kick` `unban`", inline=False)
-    e.add_field(name="🦺 | Información", value="`ping`", inline=False)
+    e.add_field(name="🎃 | Diversión", value="`say` `avatar` `tweet` `binary` `meme` `rip` `emojify` `wanted` `base64`", inline=False)
+    e.add_field(name="🎩 | Moderación", value="`ban` `kick` `unban` `snipe`", inline=False)
+    e.add_field(name="🦺 | Información", value="`ping` `userinfo`", inline=False)
     e.add_field(name="🎫 | Invitación", value="**[Invite](https://discord.com/api/oauth2/authorize?client_id=898721894889582652&permissions=17649690726&scope=bot)**", inline=False)
     e.set_footer(text=f"Pedido por: {ctx.author.name}")
     await ctx.send(embed = e)

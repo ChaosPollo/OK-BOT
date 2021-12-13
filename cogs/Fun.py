@@ -288,6 +288,8 @@ class Fun(commands.Cog):
     @commands.cooldown(2, 3, commands.BucketType.user)
     async def rip_function(self, ctx, user : typing.Optional[nextcord.Member] = None, *, reason = "Desconocida..."):
         
+        await ctx.message.delete()
+        
         if user == None:
             user = ctx.author
             
@@ -317,6 +319,8 @@ class Fun(commands.Cog):
     @commands.command(aliases = ["emojify"])
     @commands.cooldown(2, 3, commands.BucketType.user)
     async def emoji_function(self, ctx, *, args = None):
+        
+        await ctx.message.delete()
         
         emojis = []
         
@@ -358,6 +362,8 @@ class Fun(commands.Cog):
     @commands.command(aliases = ["wanted"])
     @commands.cooldown(2, 3, commands.BucketType.user)
     async def wanted_function(self, ctx, user : nextcord.Member = None):
+        
+        await ctx.message.delete()
         
         if user == None:
             user = ctx.author
